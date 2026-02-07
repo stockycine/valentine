@@ -5,100 +5,96 @@
 <title>Be My Valentine Emily</title>
 
 <style>
-  body {
-    margin: 0;
-    font-family: "Comic Sans MS", cursive, sans-serif;
-    background: linear-gradient(135deg, #ffd6e0, #ffeef3);
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+body {
+  margin: 0;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  background: linear-gradient(135deg, #ffd6e0, #ffeef3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
 
-  .card {
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-    text-align: center;
-    z-index: 2;
-  }
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  text-align: center;
+}
 
-  h1 {
-    color: #ff4d6d;
-    font-size: 32px;
-  }
+h1 {
+  color: #ff4d6d;
+}
 
-  .subtitle {
-    color: #777;
-    margin-bottom: 20px;
-  }
+button {
+  font-size: 18px;
+  padding: 12px 24px;
+  margin: 10px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+}
 
-  button {
-    font-size: 18px;
-    padding: 12px 24px;
-    margin: 10px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    position: relative;
-  }
+#yesBtn {
+  background-color: #ff4d6d;
+  color: white;
+}
 
-  #yesBtn {
-    background-color: #ff4d6d;
-    color: white;
-  }
+#noBtn {
+  background-color: #ddd;
+}
 
-  #noBtn {
-    background-color: #ddd;
-  }
+.hidden {
+  display: none;
+}
 
-  #message {
-    margin-top: 20px;
-    color: #ff4d6d;
-    font-size: 20px;
-  }
+.from {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #999;
+}
 
-  .from {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #999;
-  }
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp linear forwards;
+}
 
-  .heart {
-    position: absolute;
-    bottom: -20px;
-    font-size: 20px;
-    animation: floatUp linear forwards;
+@keyframes floatUp {
+  to {
+    transform: translateY(-110vh);
+    opacity: 0;
   }
-
-  @keyframes floatUp {
-    to {
-      transform: translateY(-110vh);
-      opacity: 0;
-    }
-  }
+}
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<!-- Question Screen -->
+<div class="card" id="questionCard">
   <h1>Emily, will you be my Valentine? ❤️</h1>
-  <div class="subtitle">You make every day better.</div>
-
-  <button id="yesBtn" onclick="sayYes()">Yes</button>
+  <button id="yesBtn">Yes</button>
   <button id="noBtn">No</button>
-
-  <p id="message"></p>
   <div class="from">— Alex</div>
+</div>
+
+<!-- Acceptance Screen -->
+<div class="card hidden" id="yesCard">
+  <h1>I love you so much gorgeous ❤️</h1>
+  <p>Best Valentine ever.</p>
 </div>
 
 <script>
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
+const questionCard = document.getElementById("questionCard");
+const yesCard = document.getElementById("yesCard");
 
 let yesScale = 1;
 
@@ -111,11 +107,12 @@ noBtn.addEventListener("mouseover", () => {
   yesBtn.style.transform = `scale(${yesScale})`;
 });
 
-function sayYes() {
-  document.getElementById("message").innerHTML =
-    "I love you so much gorgeous ❤️";
-}
+yesBtn.addEventListener("click", () => {
+  questionCard.classList.add("hidden");
+  yesCard.classList.remove("hidden");
+});
 
+/* Hearts */
 function createHeart() {
   const heart = document.createElement("div");
   heart.classList.add("heart");
@@ -123,10 +120,8 @@ function createHeart() {
 
   heart.style.left = Math.random() * window.innerWidth + "px";
   heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-  heart.style.fontSize = (Math.random() * 20 + 15) + "px";
 
   document.body.appendChild(heart);
-
   setTimeout(() => heart.remove(), 6000);
 }
 
